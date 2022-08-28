@@ -1,0 +1,191 @@
+/* 
+@font-face {
+    font-family: 'Standard-Webfont';
+    src:    url('fonts/standard-book-webfont.woff2') format('woff2'),
+            url('fonts/standard-book-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+} 
+*/
+
+
+:root {
+    --accent-color: #101d23;
+    --light-color: #bec8ca;
+    --dark-color: #f3f2f0;
+  }
+
+  /* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: var(--light-color);
+    transition: background-color 600ms ease-in-out;
+
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    transition: background-color 600ms ease-in-out;
+
+  }
+  
+
+body, .is-accent {
+    transition: background-color 600ms ease-in-out;
+}
+
+.button {
+    background-color: transparent;
+    border-color: var(--accent-color);
+}
+.button:hover {
+    border-color: var(--dark-color);
+
+}
+.is-text-dark, .is-text-caps, .is-text-light, .is-text-accent {
+    transition: color 600ms ease-in-out;
+}
+
+
+img {
+    transition: opacity 400ms ease-in-out;
+}
+
+body {
+    font-family: 'HKGroteskBold';
+    background-color: var(--light-color);
+
+}
+
+.hero-head, .hero-footer {
+    padding: 3rem;
+}
+
+.right .hero-body {
+    padding: 0;
+}
+.right .hero-head {
+    padding-bottom: 0;
+}
+.right .hero-footer {
+    padding-top: 0;
+}
+
+
+
+html {
+    overflow: auto !important;
+
+}
+
+.ornaments {
+    width: 80px;
+}
+/* Custom styles */
+.project-title {
+    width:100%;
+    letter-spacing: 6px;
+    font-family: 'HKGroteskBold' !important;
+}
+.project-subtitle {
+    width:100%;
+    display: block;
+}
+
+.project-character  {
+    width: 70vh;
+    margin: 0 auto;
+}
+/* 
+.project-character img {
+    height: 70vh;
+} */
+
+.project-character-container {
+    position: sticky; 
+    top: 0;
+}
+/* Text color */
+
+.is-read-text {
+    font-family: 'HKGroteskMedium';
+    line-height: 1.35rem;
+    letter-spacing: 0.02rem;
+}
+.is-text-dark {
+    color: var(--dark-color);
+
+}
+
+.is-text-dark a {
+    color: var(--dark-color);
+    border-bottom: 1px solid var(--dark-color);
+}
+    
+.is-text-dark a:hover {
+    border: none;
+    color: var(--light-color);
+
+}
+
+.has-text-indent {
+    text-indent: 1.5rem;
+}
+.is-text-caps {
+    font-family: 'HKGroteskBold';
+    color: var(--dark-color);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+.is-text-light {
+    color: var(--light-color);
+
+}
+
+.is-text-light a {
+    color: var(--light-color);
+    border-bottom: 1px solid var(--light-color);
+}
+    
+
+
+.is-text-light a:hover {
+    border: none;
+    color: var(--dark-color);
+}
+
+.is-text-accent {
+    color: var(--accent-color);
+
+}
+.is-accent {
+    background-color:var(--accent-color);
+}
+
+
+
+
+@media screen and (max-width: 1215px) {
+    .is-read-text {
+        font-size: 0.85rem !important;
+        letter-spacing: 0.01rem;
+        line-height: 1.2rem;
+
+    }
+    .hero-head, .hero-footer, .left .hero-body {
+        padding: 1.8rem !important;
+    } 
+    
+  }
+
+  @media screen and (max-width: 768px) {
+    html {
+        overflow: auto !important;
+    }
+  }
+

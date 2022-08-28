@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1,minimum-scale=1">
+
+  <meta name="description" content="Ottocento" />
+  <title>Ottocento</title>
+  <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/hk-grotesk" type="text/css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="text/javascript">
+    const isMobile = window.innerWidth < 768
+    /* Define sections */
+    const sections = {
+      pages: [], 
+      current: null
+    }
+    /* Define characters to load */
+    const characters = {
+      current: 0,
+      types: [
+        {
+          src: "./img/1.jpg",
+          accent: "#101d23",
+          light: "#bec8ca",
+          dark: "#f3f2f0",
+          name: "Harlod Mancini",
+          birthdate: "1796"
+        },
+        {
+          src: "./img/2.jpg",
+          accent: "#301027",
+          light: "#dfdade",
+          dark: "#9ea9ab",
+          name: "Solomon T. Weils",
+          birthdate: "1827"
+        },
+        {
+          src: "./img/3.jpg",
+          accent: "#24312a",
+          light: "#e3e0db",
+          dark: "#c19d4f",
+          name: "Oscar K. Hamaguchi",
+          birthdate: "1804"
+        },
+        {
+          src: "./img/4.jpg",
+          accent: "#25211e",
+          light: "#b7958b",
+          dark: "#ece6d6",
+          name: "Julius Ibrahim Müller",
+          birthdate: "1830"
+        },
+        {
+          src: "./img/6.jpg",
+          accent: "#20383a",
+          light: "#ebe4da",
+          dark: "#c1744a",
+          name: "Hans J. Sartori",
+          birthdate: "1854"
+        },
+        {
+          src: "./img/7.png",
+          accent: "#292b2a",
+          light: "#caa8af",
+          dark: "#f3f2ee",
+          name: "Delbert Tyron Wellesley",
+          birthdate: "1810"
+        },
+        {
+          src: "./img/8.jpg",
+          accent: "#ac5251",
+          light: "#ebe4da",
+          dark: "#181435",
+          name: "Friedrich Berger",
+          birthdate: "1829"
+        },
+        {
+          src: "./img/9.png",
+          accent: "#251432",
+          light: "#b89a74",
+          dark: "#e7d29e",
+          name: "César C. Richter",
+          birthdate: "1799"
+        },
+        {
+          src: "./img/10.jpg",
+          accent: "#809986",
+          light: "#dfe1dc",
+          dark: "#192c30",
+          name: "Lyle U. Gonzales",
+          birthdate: "1803"
+        }
+      ]
+    }
+
+    const loadCharacter = (id) => {
+      // Hide current image
+      let character = characters.types[id]
+      characters.current = id
+      // Fade out image  
+      document.getElementById("ch-image").style.opacity = 0
+      // Animate the rest
+      setTimeout(() => {
+        // Once is fade out (200 ms), then change all the colors
+        document.documentElement.style.setProperty('--accent-color', character.accent)
+        document.documentElement.style.setProperty('--light-color', character.light)
+        document.documentElement.style.setProperty('--dark-color', character.dark)
+        document.getElementById("ch-name").innerHTML = character.name
+        document.getElementById("ch-birthdate").innerHTML = "B." + character.birthdate
+        document.getElementById("ch-image").src = character.src
+        setTimeout(() => {
+          // Once color transition is over (600 ms), the load the new character
+          document.getElementById("ch-image").style.opacity = 1
+        }, 600)
+      }, 405)
+    }
+
+    const getSectionIdByTitle = (title) => {
+      return sections.pages.findIndex(page=>page.title == title)
+    }
+
+    const setCurrentSectionByScrollPosition = () => {
+      sections.pages.forEach((page,id)=> {
+        if (window.scrollY == page.scrollPosition) {
+          sections.current = id
+        } 
+      })
+    }
+
+    const setSections = () => {
+      sections.pages = [{
+        title: "home",
+        scrollPosition: 0
+      },{
+        title: "about",
+        scrollPosition: document.getElementById(isMobile ? "aboutCopy" :"about").offsetTop
+      }]
+      if (isMobile) {
+        // Add extra section
+        sections.pages = [...sections.pages, ...[{
+          title: "preview",
+          scrollPosition: document.getElementById("preview").offsetTop
+        }]]
+      }
+    }
+
+    const goTo = (destination) => {
+      setSections()
+      if (typeof destination === "string") {
+        destination = getSectionIdByTitle(destination)
+      }
+      window.scrollTo({ top: sections.pages[destination].scrollPosition, behavior: "smooth"})
+      sections.current = destination
+    }
+
+    const init = () => {       
+  
+      setSections()
+      setCurrentSectionByScrollPosition()
+
+      document.getElementById("navigation").innerHTML = isMobile 
+      ?  `<a href="#" id="aboutLink">About</a> • <a href="#" id="previewLink">Preview</a> • <a href="http://twitter.com/beru__bara" target="_blank">Twitter</a>`
+      :  `<a href="#" id="aboutLink">About</a> • <a href="http://twitter.com/beru__bara" target="_blank">Twitter</a>`
+            
+    
+      document.getElementById("generateLink").addEventListener("click", (e) => {
+        let id = (characters.current + 1) % characters.types.length
+        loadCharacter(id)
+        e.preventDefault();
+      })
+
+      document.getElementById("aboutLink").addEventListener("click", (e) => {
+        goTo("about")
+        e.preventDefault()
+      })
+
+      if (isMobile) {
+        document.getElementById("previewLink").addEventListener("click", (e) => {
+          goTo("preview")
+          e.preventDefault()
+        })
+      }
+
+      document.getElementById(isMobile ? "backLinkCopy" : "backLink").addEventListener("click", (e) => {
+        goTo("home")
+        e.preventDefault()
+      })
+
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="columns is-gapless">
+
+      <!-- [ Text column ] -->
+      <div class="column is-4 left">
+        <!-- Home -->
+        <section class="hero is-accent has-text-centered is-fullheight" id="home">
+          <div class="hero-head is-text-dark is-read-text is-size-6">
+            <p>A collection of generative fictional characters inspired by the society of the 19th century</p>
+          </div>
+          <div class="hero-body">
+            <div class="project-title">
+              <p class="project-title is-size-2-mobile is-size-5 is-size-3-desktop is-size-2-widescreen is-text-light">
+                OTTOCENTO
+              </p>
+              <p class="project-subtitle is-size-7 is-text-caps">
+                Chapter 1
+              </p>
+            </div>
+          </div>
+          <div class="hero-footer is-text-dark is-read-text is-size-6 ">
+            <p id ="navigation">
+            </p>
+          </div>
+        </section>
+        <!-- About -->
+        <section class="hero is-accent is-fullheight has-text-centered is-hidden-mobile" id="about">
+          <div class="hero-head is-size-7 is-text-caps">
+            <p>About the project</p>
+          </div>
+          <div class="hero-body has-text-left">
+            <div class="is-text-light is-size-6 is-read-text has-text-indent">
+              <p class="is-text-light pb-4">
+                «Ottocento» is a collection of generative portraits of fictional historical figures. The series starts
+                by
+                exploring the nuances of the male figure as represented in the 19th century («Ottocento» in Italian).
+                Further
+                chapters of the project focusing on a different gender spectrum will follow. The illustrations, drawn by
+                hand
+                and then converted to digital, constitute an ironic portrayal of the society of that era. The portraits,
+                all in
+                the same three-quarter view, reference the work of German photographer August Sander.
+              </p>
+              <p class="is-text-light  pb-4">
+                Individual features and expressions are combined through the controlled randomness that generative art
+                affords,
+                deliberately blurring clear visual distinctions between nationalities, roles, and social classes. The
+                result is
+                an «Esperanto» of human types with an uncanny familiarity. Is that a poet? A salesman? An aristocrat? A
+                farmer?
+                Unlike Sander’s project, «Ottocento» doesn’t force any labels on the characters, eventually leaving the
+                interpretation open to the viewer.
+              </p>
+              <p class="is-text-light">
+                This NFT project has been ideated by Berubara. Find me on <a href="https://mobile.twitter.com/beru__bara" target="_blank">Twitter</a> and <a
+                  href="https://www.instagram.com/massimo__basili/" target="_blank">Instagram</a>.
+                Part of the proceeds will be used to support emerging voices of cis-women, non-binary and trans authors
+                working
+                as cartoonist and graphic novel artists.
+                [Add thanks section]
+              </p>
+
+            </div>
+          </div>
+          <div class="hero-footer is-size-7 is-text-caps">
+            <p id="backLink" class="is-clickable">Back</p>
+          </div>
+        </section>
+      </div>
+      <!-- [ /Text column ] -->
+
+      <!-- [ Character column ] -->
+      <div class="column is-8 right">
+        <section class="hero is-fullheight has-text-centered project-character-container" id="preview">
+          <div class="hero-head">
+            <div class="container has-text-centered is-text-accent">
+              <svg class="ornaments mb-3" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg"
+                width="126.5" height="31.3" viewBox="0 0 127 31" xml:space="preserve">
+                <path fill="currentColor"
+                  d="M62 16c1 2 2 3 5 3l13-1c3 0 9 0 11 3 3 3-2 6-4 7-8 3-15-3-22-6-4-1-10 2-14 3l-14 4c-8 2-17 4-25 1-7-2-12-8-12-14C0 9 6 3 13 3c4 0 15 5 9 11v-4c-1-2-2-4-4-4-3-2-8-1-11 1-7 6-3 16 3 20 10 5 22 1 31-1l17-5c2 0 5 0 3-3-1-2-3-2-5-2-4 0-10 0-12-4s0-7 2-9c10-7 23 0 32 4 10 4 21 10 32 10 5 0 10 0 13-4 2-2 1-4-1-5-2 0-4 2-5 3 0-2 0-4 3-5 2-1 5 0 6 3 3 6-5 9-10 10-13 2-26-5-38-10-7-3-14-6-21-6-4 0-14 2-9 8 1 2 5 3 8 3s3-3 4-5 5-3 6 0c2 3-2 5-4 7 1 3 1-1 0 0zm6 5c3 5 13 7 18 5 2 0 2-2 4-3-3-2-3-3-7-3l-15 1c3 4 2 0 0 0zm-2-10c-2-1-4-3-5 0-2 4 4 1 5 0-1-1-2 1 0 0z">
+                </path>
+              </svg>
+              <br>
+              <p class="is-text-accent is-size-7 is-text-caps" id="ch-name">Leopold Brooks</p>
+              <p class="is-text-accent is-size-7 is-text-caps" id="ch-birthdate">B. 1982</p>
+            </div>
+          </div>
+          <div class="hero-body">
+            <div class="project-character ">
+              <figure class="image is-square is-fullwidth">
+                <img id="ch-image" src="./img/1.jpg" />
+              </figure>
+            </div>
+          </div>
+          <div class="hero-footer">
+            <div class="container has-text-centered is-text-accent">
+              <p class="button is-rounded is-text-accent is-size-7 is-text-caps is-clickable" id="generateLink">Generate
+                another!</p><br />
+              <svg class="ornaments mt-3" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg"
+                width="126.5" height="31.3" viewBox="0 0 127 31" xml:space="preserve">
+                <path fill="currentColor"
+                  d="M62 16c1 2 2 3 5 3l13-1c3 0 9 0 11 3 3 3-2 6-4 7-8 3-15-3-22-6-4-1-10 2-14 3l-14 4c-8 2-17 4-25 1-7-2-12-8-12-14C0 9 6 3 13 3c4 0 15 5 9 11v-4c-1-2-2-4-4-4-3-2-8-1-11 1-7 6-3 16 3 20 10 5 22 1 31-1l17-5c2 0 5 0 3-3-1-2-3-2-5-2-4 0-10 0-12-4s0-7 2-9c10-7 23 0 32 4 10 4 21 10 32 10 5 0 10 0 13-4 2-2 1-4-1-5-2 0-4 2-5 3 0-2 0-4 3-5 2-1 5 0 6 3 3 6-5 9-10 10-13 2-26-5-38-10-7-3-14-6-21-6-4 0-14 2-9 8 1 2 5 3 8 3s3-3 4-5 5-3 6 0c2 3-2 5-4 7 1 3 1-1 0 0zm6 5c3 5 13 7 18 5 2 0 2-2 4-3-3-2-3-3-7-3l-15 1c3 4 2 0 0 0zm-2-10c-2-1-4-3-5 0-2 4 4 1 5 0-1-1-2 1 0 0z">
+                </path>
+              </svg>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- [ /Character column ] -->
+
+      <!-- [ Text column COPY (horrible hack to quickly make the website responsive) ] -->
+      <div class="column is-4 left is-hidden-tablet" id="aboutCopy">
+        <!-- About -->
+        <section class="hero is-accent is-fullheight has-text-centered">
+          <div class="hero-head is-size-7 is-text-caps">
+            <p>About the project</p>
+          </div>
+          <div class="hero-body has-text-left">
+            <div class="is-text-light is-size-6 is-read-text has-text-indent">
+              <p class="is-text-light pb-4">
+                «Ottocento» is a collection of generative portraits of fictional historical figures. The series starts
+                by
+                exploring the nuances of the male figure as represented in the 19th century («Ottocento» in Italian).
+                Further
+                chapters of the project focusing on a different gender spectrum will follow. The illustrations, drawn by
+                hand
+                and then converted to digital, constitute an ironic portrayal of the society of that era. The portraits,
+                all in
+                the same three-quarter view, reference the work of German photographer August Sander.
+              </p>
+              <p class="is-text-light  pb-4">
+                Individual features and expressions are combined through the controlled randomness that generative art
+                affords,
+                deliberately blurring clear visual distinctions between nationalities, roles, and social classes. The
+                result is
+                an «Esperanto» of human types with an uncanny familiarity. Is that a poet? A salesman? An aristocrat? A
+                farmer?
+                Unlike Sander’s project, «Ottocento» doesn’t force any labels on the characters, eventually leaving the
+                interpretation open to the viewer.
+              </p>
+              <p class="is-text-light">
+                This NFT project has been ideated by Berubara. Find me on <a href="https://mobile.twitter.com/beru__bara" target="_blank">Twitter</a> and <a
+                  href="https://www.instagram.com/massimo__basili/" target="_blank">Instagram</a>.
+                Part of the proceeds will be used to support emerging voices of cis-women, non-binary and trans authors
+                working
+                as cartoonist and graphic novel artists.
+                [Add thanks section]
+              </p>
+
+            </div>
+          </div>
+          <div class="hero-footer is-size-7 is-text-caps">
+            <p id="backLinkCopy" class="is-clickable">Back</p>
+          </div>
+        </section>
+      </div>
+      <!-- [ /Text column ] -->
+
+    </div>
+  </div>
+</body>
+
+</html>
